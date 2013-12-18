@@ -6,6 +6,7 @@ class ofxAssetManager {
   public:
 	static ofxAssetManager* getInstance();
 	ofImage* getImage( string url, bool cache=true );
+    void removeCachedImage( string url );
 
   private:
   	ofxAssetManager(){};	// private ctor
