@@ -19,10 +19,11 @@ ofImage* ofxAssetManager::getImage( string url, bool cache ){
 		return mImageMap[url];
 	}else{
 		ofImage *newImg = new ofImage();
+		newImg->loadImage( url );
+
 		if( cache ){
             mImageMap[url] = newImg;
 		}
-		newImg->loadImage( url );
 
 		return newImg;
 	}
@@ -34,4 +35,22 @@ void ofxAssetManager::removeCachedImage( string url ){
     mImageMap.erase(url);
     delete tmp;
     tmp = NULL;
+}
+
+ofxFTGLFont* ofxAssetManager::getFont(string fontPath, int fontSize){
+
+    string key = fontPath + ofToString(fontSize);
+
+    if( mFontMap[key] ){
+        return mFontMap[key];
+    }else{
+        ofxFTGLFont *newFont = new ofxFTGLFont();
+        newFont->loadFont( fontPath, fontSize );
+        mFontMap[key] = newFont;
+
+        return newFont;
+    }
+
+    return NULL;
+
 }
