@@ -5,21 +5,23 @@ ofxAssetManager* ofxAssetManager::mInstance = NULL;
 ofxAssetManager* ofxAssetManager::getInstance(){
 	if( !mInstance ){
 		mInstance = new ofxAssetManager();
-	}
+        	}
 
 	return mInstance;
 }
 
 ofxAssetManager::~ofxAssetManager() {
 	// cleanup
+    mLoader->waitForThread();
 }
 
 ofImage* ofxAssetManager::getImage( string url, bool cache ){
+    ofLog(OF_LOG_ERROR)<<url<<endl;
 	if( mImageMap[url] ){
 		return mImageMap[url];
 	}else{
 		ofImage *newImg = new ofImage();
-		newImg->loadImage( url );
+		newImg->loadImage(url);
 
 		if( cache ){
             mImageMap[url] = newImg;
@@ -35,6 +37,23 @@ void ofxAssetManager::removeCachedImage( string url ){
     mImageMap.erase(url);
     delete tmp;
     tmp = NULL;
+}
+ofTrueTypeFont* ofxAssetManager::getTTFont(string fontPath, int fontSize){
+    
+    string key = fontPath + ofToString(fontSize);
+    
+    if( mFontMap[key] ){
+        return mTTFontMap[key];
+    }else{
+        ofTrueTypeFont *newFont = new ofTrueTypeFont();
+        newFont->loadFont( fontPath, fontSize , true, true);
+        mTTFontMap[key] = newFont;
+        
+        return newFont;
+    }
+    
+    return NULL;
+    
 }
 
 ofxFTGLFont* ofxAssetManager::getFont(string fontPath, int fontSize){
@@ -53,4 +72,19 @@ ofxFTGLFont* ofxAssetManager::getFont(string fontPath, int fontSize){
 
     return NULL;
 
+}
+
+ofxTrueTypeFontUC* ofxAssetManager::getUCFont(string fontName, int fontSize){
+    string key = fontName + ofToString(fontSize);
+    
+    if( mUCFontMap[key] ){
+        return mUCFontMap[key];
+    }else{
+        ofxTrueTypeFontUC *newFont = new ofxTrueTypeFontUC();
+        newFont->loadFont( fontName, fontSize, true, true);
+        mUCFontMap[key] = newFont;
+        return newFont;
+    }
+    
+    return NULL;
 }
