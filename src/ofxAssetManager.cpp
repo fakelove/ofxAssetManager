@@ -11,8 +11,7 @@ ofxAssetManager* ofxAssetManager::getInstance(){
 }
 
 ofxAssetManager::~ofxAssetManager() {
-	// cleanup
-    mLoader->waitForThread();
+
 }
 
 ofImage* ofxAssetManager::getImage( string url, bool cache ){
@@ -42,7 +41,7 @@ ofTrueTypeFont* ofxAssetManager::getTTFont(string fontPath, int fontSize){
     
     string key = fontPath + ofToString(fontSize);
     
-    if( mFontMap[key] ){
+    if( mTTFontMap[key] ){
         return mTTFontMap[key];
     }else{
         ofTrueTypeFont *newFont = new ofTrueTypeFont();
@@ -56,35 +55,21 @@ ofTrueTypeFont* ofxAssetManager::getTTFont(string fontPath, int fontSize){
     
 }
 
-ofxFTGLFont* ofxAssetManager::getFont(string fontPath, int fontSize){
+//ofxFTGLFont* ofxAssetManager::getFont(string fontPath, int fontSize){
+//
+//    string key = fontPath + ofToString(fontSize);
+//
+//    if( mFontMap[key] ){
+//        return mFontMap[key];
+//    }else{
+//        ofxFTGLFont *newFont = new ofxFTGLFont();
+//        newFont->loadFont( fontPath, fontSize );
+//        mFontMap[key] = newFont;
+//
+//        return newFont;
+//    }
+//
+//    return NULL;
+//
+//}
 
-    string key = fontPath + ofToString(fontSize);
-
-    if( mFontMap[key] ){
-        return mFontMap[key];
-    }else{
-        ofxFTGLFont *newFont = new ofxFTGLFont();
-        newFont->loadFont( fontPath, fontSize );
-        mFontMap[key] = newFont;
-
-        return newFont;
-    }
-
-    return NULL;
-
-}
-
-ofxTrueTypeFontUC* ofxAssetManager::getUCFont(string fontName, int fontSize){
-    string key = fontName + ofToString(fontSize);
-    
-    if( mUCFontMap[key] ){
-        return mUCFontMap[key];
-    }else{
-        ofxTrueTypeFontUC *newFont = new ofxTrueTypeFontUC();
-        newFont->loadFont( fontName, fontSize, true, true);
-        mUCFontMap[key] = newFont;
-        return newFont;
-    }
-    
-    return NULL;
-}
